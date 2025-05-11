@@ -46,6 +46,11 @@ data = {
     "Date": [current_date] * 18  # Same date for all metrics (current date)
 }
 
+# Check lengths of lists before proceeding
+print(f"Length of 'Metric Name' list: {len(data['Metric Name'])}")
+print(f"Length of 'Metric Value' list: {len(data['Metric Value'])}")
+print(f"Length of 'Date' list: {len(data['Date'])}")
+
 # Check if the lengths of lists match
 metric_count = len(data["Metric Name"])
 assert len(data["Metric Value"]) == metric_count, "The length of 'Metric Value' list doesn't match 'Metric Name'."
@@ -53,6 +58,10 @@ assert len(data["Date"]) == metric_count, "The length of 'Date' list doesn't mat
 
 # Create DataFrame from the data
 df = pd.DataFrame(data)
+
+# Display the DataFrame to check
+print("\nDataFrame:\n")
+print(df)
 
 # Function to generate dynamic suggestions based on the metric values
 def get_dynamic_suggestion(metric_name, metric_value):
