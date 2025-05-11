@@ -1,0 +1,3 @@
+Recommendation for Churn Rate (%):
+
+High churn rate suggests customers may not be satisfied. Gather feedback and focus on improving customer experiences.

@@ -1,0 +1,3 @@
+Recommendation for Bounce Rate (%):
+
+High bounce rates suggest issues with landing page relevance. Consider A/B testing content and improving page load speed.
