@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-# Create the 'output of the analysis' folder if it doesn't exist
+# Create the 'output_of_the_analysis' folder if it doesn't exist
 output_folder = 'output_of_the_analysis'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -32,111 +32,111 @@ metrics = {
 def get_dynamic_suggestion(metric_name, metric_value):
     if metric_name == "Total Visitors":
         if metric_value > 25000:
-            return "Great job! Continue monitoring the trend of unique visitors. If growth continues, consider scaling marketing efforts."
+            return "Great job! Continue monitoring the trend of unique visitors."
         else:
-            return "Visitor growth is steady. Consider increasing visibility through paid promotions or partnerships to boost numbers."
+            return "Consider increasing visibility through paid promotions or partnerships."
     
     elif metric_name == "Pageviews":
         if metric_value > 100000:
-            return "Your pageviews are high! Focus on optimizing high-traffic pages to convert visitors into customers."
+            return "Focus on optimizing high-traffic pages to convert visitors into customers."
         else:
-            return "Low pageviews could indicate that content optimization is needed. Enhance internal linking and SEO strategies."
+            return "Enhance internal linking and SEO strategies."
     
     elif metric_name == "Bounce Rate (%)":
         if metric_value < 40:
-            return "Your bounce rate is excellent! Continue optimizing content to maintain low bounce rates."
+            return "Excellent! Continue optimizing content to maintain low bounce rates."
         elif metric_value < 60:
-            return "Your bounce rate is moderate. Consider revising landing page content to align better with visitor expectations."
+            return "Consider revising landing page content."
         else:
-            return "High bounce rates suggest issues with landing page relevance. Consider A/B testing content and improving page load speed."
+            return "Test landing page variations and improve page load speed."
     
     elif metric_name == "Total Followers Growth":
         if metric_value > 2000:
-            return "Follower growth is strong! Keep engaging your audience and explore partnerships to maintain momentum."
+            return "Strong growth! Keep engaging and explore partnerships."
         else:
-            return "Follower growth is plateauing. Try diversifying content or running targeted ad campaigns to boost engagement."
+            return "Try diversifying content or running targeted campaigns."
     
     elif metric_name == "Engagement Rate (%)":
         if metric_value > 5:
-            return "Excellent engagement! Focus on high-performing content formats to sustain engagement."
+            return "Great engagement! Continue with high-performing content."
         else:
-            return "Low engagement suggests the need for content reevaluation. Test different content types or adjust posting frequency."
+            return "Test different content types or adjust posting frequency."
     
     elif metric_name == "Open Rate (%)":
         if metric_value > 25:
-            return "Your open rate is impressive! Keep experimenting with subject lines to maintain high open rates."
+            return "Keep experimenting with subject lines."
         else:
-            return "Open rates are low. Try segmenting your audience more effectively or revising your email subject lines."
+            return "Segment your audience or revise subject lines."
     
     elif metric_name == "Click-Through Rate (CTR %)":
         if metric_value > 3:
-            return "Great click-through rate! Focus on optimizing your CTAs and visuals to maintain this performance."
+            return "Great CTR! Focus on optimizing CTAs."
         else:
-            return "Low CTR suggests your CTAs or email content may need improvement. Test different messaging and layouts."
+            return "Test different messaging and layouts."
     
     elif metric_name == "Unsubscribe Rate (%)":
         if metric_value < 1:
-            return "Your unsubscribe rate is low! Continue delivering valuable content to your subscribers."
+            return "Your unsubscribe rate is low! Continue delivering valuable content."
         else:
-            return "Unsubscribes are rising. Reassess the content you're sending to ensure it's in line with subscriber expectations."
+            return "Reassess the content you're sending."
     
     elif metric_name == "Organic Traffic Growth (%)":
         if metric_value > 20:
-            return "Excellent organic growth! Consider scaling your SEO efforts further and investing in high-potential keywords."
+            return "Consider scaling your SEO efforts further."
         else:
-            return "Organic traffic growth is slow. Revise your SEO strategy or consider investing in backlinks to boost rankings."
+            return "Revise your SEO strategy or consider backlinks."
     
     elif metric_name == "Keyword Ranking Changes":
         if metric_value > 10:
-            return "You're gaining significant rankings! Focus on maintaining these keywords and expand your SEO strategy."
+            return "Focus on maintaining rankings and expanding SEO."
         else:
-            return "Ranking changes are limited. Focus on improving SEO for underperforming keywords and explore new content ideas."
+            return "Improve SEO for underperforming keywords."
     
     elif metric_name == "Backlink Count":
         if metric_value > 1000:
-            return "Your backlink profile is strong! Keep building relationships for additional high-quality backlinks."
+            return "Keep building relationships for high-quality backlinks."
         else:
-            return "Your backlink count is low. Consider outreach campaigns to earn more backlinks from authoritative sites."
+            return "Consider outreach campaigns to earn more backlinks."
     
     elif metric_name == "Cost Per Click (CPC $)":
         if metric_value < 1:
-            return "Your CPC is low! Continue optimizing ad campaigns for cost-efficient results."
+            return "Optimize ad campaigns for cost-efficient results."
         else:
-            return "High CPC suggests that your campaigns may need optimization. Try refining targeting or adjusting your ad creatives."
+            return "Refine targeting or adjust creatives."
     
     elif metric_name == "Conversion Rate (%)":
         if metric_value > 3:
-            return "Great conversion rate! Focus on maintaining this and experiment with upselling or cross-selling strategies."
+            return "Focus on maintaining this rate and consider upselling."
         else:
-            return "Conversion rate is lower than expected. Investigate potential drop-off points in the funnel and optimize landing pages."
+            return "Investigate potential drop-off points and optimize landing pages."
     
     elif metric_name == "Return on Ad Spend (ROAS)":
         if metric_value > 4:
-            return "Your ROAS is fantastic! Scale successful campaigns and continue to optimize high-performing channels."
+            return "Scale successful campaigns and optimize high-performing channels."
         else:
-            return "Low ROAS suggests a need for better campaign targeting or creative changes to improve profitability."
+            return "Better targeting or creative changes needed."
     
     elif metric_name == "Customer Lifetime Value (CLV $)":
         if metric_value > 500:
-            return "Your CLV is healthy! Continue focusing on retention strategies and creating customer loyalty programs."
+            return "Focus on retention strategies and customer loyalty programs."
         else:
-            return "Your CLV is on the low end. Investigate ways to increase customer retention and lifetime value."
+            return "Increase retention efforts."
     
     elif metric_name == "Churn Rate (%)":
         if metric_value < 5:
-            return "Low churn rate indicates strong retention efforts. Keep up the great work!"
+            return "Low churn rate indicates strong retention."
         else:
-            return "High churn rate suggests customers may not be satisfied. Gather feedback and focus on improving customer experiences."
+            return "Focus on improving customer experience."
     
     elif metric_name == "Average Order Value (AOV $)":
         if metric_value > 75:
-            return "Your AOV is strong! Consider promoting product bundles or upselling to increase this further."
+            return "Consider promoting product bundles."
         else:
-            return "AOV is low. Look into strategies like upselling or cross-selling to encourage customers to spend more per order."
+            return "Encourage upselling or cross-selling."
 
 # Function to save unique plots for each metric
-def save_unique_plot(metric_name, metric_value, suggestion, filename):
-    plt.figure(figsize=(8, 5))
+def save_unique_plot(metric_name, metric_value, filename):
+    plt.figure(figsize=(10, 6))
     
     # Different plot types based on the metric name
     if metric_name == "Total Visitors" or metric_name == "Organic Traffic Growth (%)":
@@ -169,19 +169,24 @@ def save_unique_plot(metric_name, metric_value, suggestion, filename):
         plt.xlabel("Engagement Rate (%)")
         plt.ylabel("Percentage")
     
-    # Other plot types can be similarly added based on your requirements...
-
-    # Add the suggestion text on the plot
-    plt.text(0.5, metric_value + 1, suggestion, ha='center', va='bottom', fontsize=10, color="black", wrap=True)
-    
     plt.tight_layout()
     plt.legend()
     plt.savefig(f'{output_folder}/{filename}.jpg', format='jpg')
 
-# Loop through the metrics and generate and save unique plots
+# Function to save the recommendation as a text file
+def save_recommendation(metric_name, suggestion, filename):
+    with open(f'{output_folder}/{filename}.txt', 'w') as file:
+        file.write(f"Recommendation for {metric_name}: \n{suggestion}\n")
+
+# Loop through the metrics and generate and save unique plots and recommendations
 for metric_name, metric_value in metrics.items():
     suggestion = get_dynamic_suggestion(metric_name, metric_value)
     filename = metric_name.replace(" ", "_").replace("(%", "").replace(")", "")
-    save_unique_plot(metric_name, metric_value, suggestion, filename)
+    
+    # Save plot
+    save_unique_plot(metric_name, metric_value, filename)
+    
+    # Save recommendation in a text file
+    save_recommendation(metric_name, suggestion, filename)
 
-print("Unique plots with dynamic recommendations have been generated and saved in the 'output of the analysis' folder.")
+print("Unique plots and dynamic recommendations have been saved in the 'output_of_the_analysis' folder.")
