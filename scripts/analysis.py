@@ -42,6 +42,7 @@ data = {
         # Customer Retention & Revenue Metrics
         random.uniform(100, 1000), random.uniform(2.0, 10.0), random.uniform(20.0, 150.0)
     ],
+    # Ensure the Date list has the same number of entries as the number of metrics
     "Date": [current_date] * 18  # Same date for all metrics (current date)
 }
 
