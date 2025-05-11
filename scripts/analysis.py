@@ -45,6 +45,11 @@ data = {
     "Date": [current_date] * 18  # Same date for all metrics (current date)
 }
 
+# Check if the lengths of lists match
+metric_count = len(data["Metric Name"])
+assert len(data["Metric Value"]) == metric_count, "The length of 'Metric Value' list doesn't match 'Metric Name'."
+assert len(data["Date"]) == metric_count, "The length of 'Date' list doesn't match 'Metric Name'."
+
 # Create DataFrame from the data
 df = pd.DataFrame(data)
 
