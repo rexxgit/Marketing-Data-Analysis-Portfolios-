@@ -2,39 +2,36 @@ import matplotlib.pyplot as plt
 import random
 import os
 
-# Set number of data points per metric
-data_points = 12
-
-# Metric definitions: name and value range
+# Define metrics with their value ranges and preferred plot types
 metrics = {
-    "Total Visitors": (1000, 10000),
-    "Pageviews": (1500, 15000),
-    "Bounce Rate": (20, 90),
-    "Total Followers Growth": (0, 500),
-    "Engagement Rate": (0.5, 10),
-    "Open Rate": (10, 60),
-    "Click-Through Rate (CTR)": (1, 20),
-    "Unsubscribe Rate": (0, 10),
-    "Organic Traffic Growth": (-10, 50),
-    "Keyword Ranking": (1, 100),
-    "Backlink Count": (50, 500),
-    "Cost Per Click (CPC)": (0.2, 5),
-    "Conversion Rate": (0.5, 15),
-    "Return on Ad Spend (ROAS)": (0.5, 10),
-    "Customer Lifetime Value (CLV)": (50, 1000),
-    "Churn Rate": (1, 30),
-    "Average Order Value (AOV)": (20, 200),
+    "Total Visitors": {"range": (1000, 10000), "plot": "line"},
+    "Pageviews": {"range": (1500, 15000), "plot": "bar"},
+    "Bounce Rate": {"range": (20, 90), "plot": "bar"},
+    "Total Followers Growth": {"range": (0, 500), "plot": "line"},
+    "Engagement Rate": {"range": (0.5, 10), "plot": "bar"},
+    "Open Rate": {"range": (10, 60), "plot": "line"},
+    "Click-Through Rate (CTR)": {"range": (1, 20), "plot": "line"},
+    "Unsubscribe Rate": {"range": (0, 10), "plot": "bar"},
+    "Organic Traffic Growth": {"range": (-10, 50), "plot": "line"},
+    "Keyword Ranking": {"range": (1, 100), "plot": "hbar"},
+    "Backlink Count": {"range": (50, 500), "plot": "bar"},
+    "Cost Per Click (CPC)": {"range": (0.2, 5), "plot": "bar"},
+    "Conversion Rate": {"range": (0.5, 15), "plot": "bar"},
+    "Return on Ad Spend (ROAS)": {"range": (0.5, 10), "plot": "bar"},
+    "Customer Lifetime Value (CLV)": {"range": (50, 1000), "plot": "bar"},
+    "Churn Rate": {"range": (1, 30), "plot": "line"},
+    "Average Order Value (AOV)": {"range": (20, 200), "plot": "bar"},
 }
 
-# Generate random dates like "May 1", "May 4"
+# Generate dates for x-axis
 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-dates = [f"{random.choice(months)} {random.randint(1, 28)}" for _ in range(data_points)]
+dates = [f"{random.choice(months)} {random.randint(1, 28)}" for _ in range(12)]
 
 # Create output directory
 output_dir = "output_of_the_analysis"
 os.makedirs(output_dir, exist_ok=True)
 
-# Recommendation function (same as previous version)
+# Function for recommendations
 def get_recommendation(metric, value):
     if metric == "Bounce Rate":
         return "High bounce rate" if value > 60 else "Acceptable bounce rate"
@@ -70,36 +67,45 @@ def get_recommendation(metric, value):
         return "Boost follower growth" if value < 100 else "Steady growth"
     elif metric == "AOV":
         return "Upsell more" if value < 60 else "High AOV"
-    return ""
+    return "No recommendation"
 
-# Plot for each metric
-for metric, value_range in metrics.items():
-    y_values = [round(random.uniform(*value_range), 2) for _ in range(data_points)]
-    recommendation = get_recommendation(metric, sum(y_values) / data_points)
+# Create charts with side panel for recommendations
+for metric, props in metrics.items():
+    values = [round(random.uniform(*props["range"]), 2) for _ in range(12)]
+    recommendation = get_recommendation(metric, sum(values) / len(values))
 
-    # Create plot
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(dates, y_values, marker='o', linestyle='-', color='teal')
+    fig, ax = plt.subplots(figsize=(10, 4))
+    plt.subplots_adjust(left=0.3)  # Create space for the recommendation
 
-    # Label highest point with recommendation
-    max_index = y_values.index(max(y_values))
-    ax.annotate(recommendation,
-                xy=(dates[max_index], y_values[max_index]),
-                xytext=(dates[max_index], y_values[max_index] + (max(y_values) * 0.1)),
-                ha='center',
-                fontsize=8,
-                bbox=dict(boxstyle="round", fc="wheat", alpha=0.8))
+    if props["plot"] == "line":
+        ax.plot(dates, values, marker='o', linestyle='-', color='steelblue')
+    elif props["plot"] == "bar":
+        ax.bar(dates, values, color='coral')
+    elif props["plot"] == "hbar":
+        ax.barh(dates, values, color='mediumseagreen')
+        ax.set_xlabel("Value")
+        ax.set_ylabel("Keyword")
+        ax.set_title(f"{metric} (Lower is Better)")
+        # Add recommendation as text box
+        fig.text(0.01, 0.5, f"Recommendation:\n{recommendation}", fontsize=10,
+                 va='center', ha='left', bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
+        plt.tight_layout()
+        plt.savefig(f"{output_dir}/{metric.replace(' ', '_')}.png")
+        plt.close()
+        continue
 
     ax.set_title(f"{metric} Over Time", fontsize=10)
     ax.set_xlabel("Date")
     ax.set_ylabel("Value")
-    plt.xticks(rotation=45, fontsize=7)
-    plt.tight_layout()
-    plt.grid(True, linestyle="--", alpha=0.3)
+    ax.tick_params(axis='x', rotation=45)
+    ax.grid(True, linestyle='--', alpha=0.5)
 
-    # Save chart
-    filename = f"{output_dir}/{metric.replace(' ', '_')}.png"
-    plt.savefig(filename)
+    # Add recommendation as text box in left margin
+    fig.text(0.01, 0.5, f"Recommendation:\n{recommendation}", fontsize=10,
+             va='center', ha='left', bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
+
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/{metric.replace(' ', '_')}.png")
     plt.close()
 
-print(f"✅ Generated {len(metrics)} charts with time-based x-axis and metric values.")
+"✅ Charts with unique types and side-panel recommendations generated."
