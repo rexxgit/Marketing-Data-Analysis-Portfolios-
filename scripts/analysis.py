@@ -137,7 +137,7 @@ def get_recommendation(metric, value):
     return "No recommendation available."
 
 # Create output directory
-output_dir = "output_charts"
+output_dir = "output_of_the_analysis"
 os.makedirs(output_dir, exist_ok=True)
 
 # Generate individual charts
