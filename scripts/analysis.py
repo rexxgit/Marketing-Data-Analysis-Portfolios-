@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Create the 'output of the analysis' folder if it doesn't exist
-output_folder = 'output of the analysis'
+output_folder = 'output_of_the_analysis'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
