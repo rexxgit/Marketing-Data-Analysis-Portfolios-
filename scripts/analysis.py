@@ -171,7 +171,7 @@ def save_unique_plot(metric_name, metric_value, filename):
     
     plt.tight_layout()
     plt.legend()
-    plt.savefig(f'{output_folder}/{filename}.jpg', format='jpg')
+    plt.savefig(f'{output_folder}/{filename}.png', format='png')
 
 # Function to save the recommendation as a text file
 def save_recommendation(metric_name, suggestion, filename):
