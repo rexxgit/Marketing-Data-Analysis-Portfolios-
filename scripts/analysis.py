@@ -1,107 +1,130 @@
-import matplotlib.pyplot as plt
-import pandas as pd
 import os
+import pandas as pd
+import random
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 # Create the 'output_of_the_analysis' folder if it doesn't exist
 output_folder = 'output_of_the_analysis'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-# Define the metrics and their values
-metrics = {
-    "Total Visitors": 28750,
-    "Pageviews": 97230,
-    "Bounce Rate (%)": (13980 / 28750) * 100,
-    "Total Followers Growth": 29800 - 25600,
-    "Engagement Rate (%)": ((4200 + 860 + 530) / 29800) * 100,
-    "Open Rate (%)": (2740 / 10000) * 100,
-    "Click-Through Rate (CTR %)": (610 / 10000) * 100,
-    "Unsubscribe Rate (%)": (60 / 10000) * 100,
-    "Organic Traffic Growth (%)": ((10600 - 8000) / 8000) * 100,
-    "Keyword Ranking Changes": 18,
-    "Backlink Count": 1345,
-    "Cost Per Click (CPC $)": 1150 / 1000,
-    "Conversion Rate (%)": (84 / 1000) * 100,
-    "Return on Ad Spend (ROAS)": 4255 / 1150,
-    "Customer Lifetime Value (CLV $)": 64550 / 100,
-    "Churn Rate (%)": (12 / 100) * 100,
-    "Average Order Value (AOV $)": 64550 / 825
+# Current date for referencing when the metrics were recorded
+current_date = datetime.now().strftime('%Y-%m-%d')
+
+# Define the metrics with their associated data (unique data for each metric)
+data = {
+    "Metric Name": [
+        # Website & Traffic Analytics
+        "Total Visitors", "Pageviews", "Bounce Rate",
+        # Social Media Metrics
+        "Total Followers Growth", "Engagement Rate (Likes, Comments, Shares)",
+        # Email Marketing Metrics
+        "Open Rate", "Click-Through Rate (CTR)", "Unsubscribe Rate",
+        # SEO Metrics
+        "Organic Traffic Growth", "Keyword Ranking Changes", "Backlink Count",
+        # Paid Advertising Metrics
+        "Cost Per Click (CPC)", "Conversion Rate", "Return on Ad Spend (ROAS)",
+        # Customer Retention & Revenue Metrics
+        "Customer Lifetime Value (CLV)", "Churn Rate", "Average Order Value (AOV)"
+    ],
+    "Metric Value": [
+        # Website & Traffic Analytics
+        random.randint(2000, 50000), random.randint(5000, 100000), random.uniform(30.0, 70.0),
+        # Social Media Metrics
+        random.randint(1000, 50000), random.uniform(1.0, 10.0),
+        # Email Marketing Metrics
+        random.uniform(10.0, 30.0), random.uniform(2.0, 10.0), random.uniform(0.5, 5.0),
+        # SEO Metrics
+        random.uniform(5.0, 20.0), random.randint(1, 100), random.randint(100, 2000),
+        # Paid Advertising Metrics
+        random.uniform(0.5, 5.0), random.uniform(1.0, 10.0), random.uniform(1.5, 5.0),
+        # Customer Retention & Revenue Metrics
+        random.uniform(100, 1000), random.uniform(2.0, 10.0), random.uniform(20.0, 150.0)
+    ],
+    "Date": [current_date] * 18  # Same date for all metrics (current date)
 }
+
+# Create DataFrame from the data
+df = pd.DataFrame(data)
 
 # Function to generate dynamic suggestions based on the metric values
 def get_dynamic_suggestion(metric_name, metric_value):
     suggestions = {
-        "Total Visitors": "Great job! Continue monitoring the trend of unique visitors. If growth continues, consider scaling marketing efforts." if metric_value > 25000 else "Visitor growth is steady. Consider increasing visibility through paid promotions or partnerships to boost numbers.",
-        "Pageviews": "Your pageviews are high! Focus on optimizing high-traffic pages to convert visitors into customers." if metric_value > 100000 else "Low pageviews could indicate that content optimization is needed. Enhance internal linking and SEO strategies.",
-        "Bounce Rate (%)": "Your bounce rate is excellent! Continue optimizing content to maintain low bounce rates." if metric_value < 40 else "High bounce rates suggest issues with landing page relevance. Consider A/B testing content and improving page load speed.",
-        "Total Followers Growth": "Follower growth is strong! Keep engaging your audience and explore partnerships to maintain momentum." if metric_value > 2000 else "Follower growth is plateauing. Try diversifying content or running targeted ad campaigns to boost engagement.",
-        "Engagement Rate (%)": "Excellent engagement! Focus on high-performing content formats to sustain engagement." if metric_value > 5 else "Low engagement suggests the need for content reevaluation. Test different content types or adjust posting frequency.",
-        "Open Rate (%)": "Your open rate is impressive! Keep experimenting with subject lines to maintain high open rates." if metric_value > 25 else "Open rates are low. Try segmenting your audience more effectively or revising your email subject lines.",
-        "Click-Through Rate (CTR %)": "Great click-through rate! Focus on optimizing your CTAs and visuals to maintain this performance." if metric_value > 3 else "Low CTR suggests your CTAs or email content may need improvement. Test different messaging and layouts.",
-        "Unsubscribe Rate (%)": "Your unsubscribe rate is low! Continue delivering valuable content to your subscribers." if metric_value < 1 else "Unsubscribes are rising. Reassess the content you're sending to ensure it's in line with subscriber expectations.",
-        "Organic Traffic Growth (%)": "Excellent organic growth! Consider scaling your SEO efforts further and investing in high-potential keywords." if metric_value > 20 else "Organic traffic growth is slow. Revise your SEO strategy or consider investing in backlinks to boost rankings.",
-        "Keyword Ranking Changes": "You're gaining significant rankings! Focus on maintaining these keywords and expand your SEO strategy." if metric_value > 10 else "Ranking changes are limited. Focus on improving SEO for underperforming keywords and explore new content ideas.",
-        "Backlink Count": "Your backlink profile is strong! Keep building relationships for additional high-quality backlinks." if metric_value > 1000 else "Your backlink count is low. Consider outreach campaigns to earn more backlinks from authoritative sites.",
-        "Cost Per Click (CPC $)": "Your CPC is low! Continue optimizing ad campaigns for cost-efficient results." if metric_value < 1 else "High CPC suggests that your campaigns may need optimization. Try refining targeting or adjusting your ad creatives.",
-        "Conversion Rate (%)": "Great conversion rate! Focus on maintaining this and experiment with upselling or cross-selling strategies." if metric_value > 3 else "Conversion rate is lower than expected. Investigate potential drop-off points in the funnel and optimize landing pages.",
-        "Return on Ad Spend (ROAS)": "Your ROAS is fantastic! Scale successful campaigns and continue to optimize high-performing channels." if metric_value > 4 else "Low ROAS suggests a need for better campaign targeting or creative changes to improve profitability.",
-        "Customer Lifetime Value (CLV $)": "Your CLV is healthy! Continue focusing on retention strategies and creating customer loyalty programs." if metric_value > 500 else "Your CLV is on the low end. Investigate ways to increase customer retention and lifetime value.",
-        "Churn Rate (%)": "Low churn rate indicates strong retention efforts. Keep up the great work!" if metric_value < 5 else "High churn rate suggests customers may not be satisfied. Gather feedback and focus on improving customer experiences.",
-        "Average Order Value (AOV $)": "Your AOV is strong! Consider promoting product bundles or upselling to increase this further." if metric_value > 75 else "AOV is low. Look into strategies like upselling or cross-selling to encourage customers to spend more per order."
+        # Website & Traffic Analytics
+        "Total Visitors": f"Total Visitors: {metric_value}. Great! Focus on improving conversion rates for more qualified traffic.",
+        "Pageviews": f"Pageviews: {metric_value}. Strong engagement! Try improving internal linking to boost further exploration.",
+        "Bounce Rate": f"Bounce Rate: {metric_value}%. It's high. Consider improving landing page design and load speed.",
+        
+        # Social Media Metrics
+        "Total Followers Growth": f"Followers Growth: {metric_value}. Well done! Engage more with followers to further increase growth.",
+        "Engagement Rate (Likes, Comments, Shares)": f"Engagement Rate: {metric_value}%. Great interaction! Keep posting valuable content to maintain momentum.",
+        
+        # Email Marketing Metrics
+        "Open Rate": f"Open Rate: {metric_value}%. Excellent! Experiment with subject lines and time of sending for more engagement.",
+        "Click-Through Rate (CTR)": f"Click-Through Rate: {metric_value}%. Keep optimizing your CTAs and email content to increase clicks.",
+        "Unsubscribe Rate": f"Unsubscribe Rate: {metric_value}%. It's a bit high. Analyze the content or frequency to reduce this.",
+        
+        # SEO Metrics
+        "Organic Traffic Growth": f"Organic Traffic Growth: {metric_value}%. Good SEO strategy! Continue to focus on quality content and backlinks.",
+        "Keyword Ranking Changes": f"Keyword Ranking Changes: {metric_value}. Keep improving your content and optimizing for high-value keywords.",
+        "Backlink Count": f"Backlink Count: {metric_value}. Strong link profile! Focus on building even more quality backlinks for higher authority.",
+        
+        # Paid Advertising Metrics
+        "Cost Per Click (CPC)": f"CPC: {metric_value}$. It's reasonable. Monitor to ensure optimal ROAS and adjust your targeting if needed.",
+        "Conversion Rate": f"Conversion Rate: {metric_value}%. Solid! Consider A/B testing landing pages to improve conversions further.",
+        "Return on Ad Spend (ROAS)": f"ROAS: {metric_value}$. Great return! Keep optimizing ad creatives and targeting to maintain or improve this.",
+        
+        # Customer Retention & Revenue Metrics
+        "Customer Lifetime Value (CLV)": f"CLV: {metric_value}$. Excellent! Keep focusing on customer retention strategies to increase this further.",
+        "Churn Rate": f"Churn Rate: {metric_value}%. It's a bit high. Improve customer satisfaction and post-purchase support.",
+        "Average Order Value (AOV)": f"AOV: {metric_value}$. Great! Implement upsell and cross-sell strategies to increase it even further."
     }
     return suggestions.get(metric_name, "")
 
-# Function to save unique plots for each metric
-def save_unique_plot(metric_name, metric_value, filename):
-    plt.figure(figsize=(8, 5))
-    
-    # Different plot types based on the metric name
-    if metric_name == "Total Visitors" or metric_name == "Organic Traffic Growth (%)":
-        plt.plot([1, 2, 3, 4], [25000, 26000, 28000, metric_value], marker='o', color='blue', label=metric_name)
-        plt.title(f"{metric_name} - Trend Over Time")
-        plt.xlabel("Time (months)")
-        plt.ylabel("Value")
-    
-    elif metric_name == "Pageviews":
-        plt.bar([1], [metric_value], color='green', label=metric_name)
-        plt.title(f"{metric_name} - Total Pageviews")
-        plt.xlabel("Pageviews")
-        plt.ylabel("Count")
-    
-    elif metric_name == "Bounce Rate (%)":
-        plt.bar([1], [metric_value], color='red', label=metric_name)
-        plt.title(f"{metric_name} - Bounce Rate")
-        plt.xlabel("Bounce Rate (%)")
-        plt.ylabel("Percentage")
-    
-    elif metric_name == "Total Followers Growth":
-        plt.plot([1, 2, 3, 4], [26000, 27000, 28000, 29800], marker='o', color='purple', label=metric_name)
-        plt.title(f"{metric_name} - Followers Growth Over Time")
-        plt.xlabel("Time (months)")
-        plt.ylabel("Followers")
-    
-    elif metric_name == "Engagement Rate (%)":
-        plt.bar([1], [metric_value], color='orange', label=metric_name)
-        plt.title(f"{metric_name} - Engagement Rate")
-        plt.xlabel("Engagement Rate (%)")
-        plt.ylabel("Percentage")
-    
-    # Save the plot as PNG
-    plt.tight_layout()
-    plt.legend()
-    plt.savefig(f'{output_folder}/{filename}.png', format='png')
-    plt.close()
+# Display DataFrame with metrics in a CSV-like format (visible in pandas DataFrame)
+print("Metrics in Structured Format:\n")
+print(df)
 
-# Function to save recommendations as text files
-def save_recommendation_text(metric_name, suggestion, filename):
-    with open(f'{output_folder}/{filename}_recommendation.txt', 'w') as f:
-        f.write(f"Recommendation for {metric_name}:\n\n{suggestion}")
-
-# Loop through the metrics and generate and save unique plots and recommendations
-for metric_name, metric_value in metrics.items():
+# Generate and display dynamic suggestions for each metric
+for index, row in df.iterrows():
+    metric_name = row["Metric Name"]
+    metric_value = row["Metric Value"]
     suggestion = get_dynamic_suggestion(metric_name, metric_value)
-    filename = metric_name.replace(" ", "_").replace("(%", "").replace(")", "")
-    save_unique_plot(metric_name, metric_value, filename)
-    save_recommendation_text(metric_name, suggestion, filename)
+    print(f"\nMetric: {metric_name}\nValue: {metric_value}\nSuggestion: {suggestion}")
 
-print("Unique plots with recommendations have been generated and saved in the 'output_of_the_analysis' folder.")
+# Function to plot visualizations for metrics
+def plot_metrics():
+    # Set the figure size for better visibility
+    plt.figure(figsize=(10, 6))
+
+    # Plotting the Metric Value Distribution (Bar Plot)
+    plt.bar(df["Metric Name"], df["Metric Value"], color='skyblue')
+    plt.xticks(rotation=90)  # Rotate labels for better readability
+    plt.title('Metric Values Visualization')
+    plt.ylabel('Metric Value')
+    plt.tight_layout()
+
+    # Save the plot to the 'output_of_the_analysis' folder
+    plt.savefig(f"{output_folder}/metric_values_visualization.png")
+    plt.show()
+
+    # Generate more specific plots for individual metrics (example: Email Metrics)
+    open_rate_value = df[df["Metric Name"] == "Open Rate"]["Metric Value"].values[0]
+    click_rate_value = df[df["Metric Name"] == "Click-Through Rate (CTR)"]["Metric Value"].values[0]
+    unsubscribe_rate_value = df[df["Metric Name"] == "Unsubscribe Rate"]["Metric Value"].values[0]
+
+    # Plot Pie Chart for Email Performance
+    plt.figure(figsize=(6, 6))
+    labels = ['Open Rate', 'Click-Through Rate', 'Unsubscribe Rate']
+    values = [open_rate_value, click_rate_value, unsubscribe_rate_value]
+    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#66b3ff', '#99ff99', '#ff6666'])
+    plt.title('Email Performance Breakdown')
+    plt.tight_layout()
+
+    # Save the pie chart
+    plt.savefig(f"{output_folder}/email_performance_pie_chart.png")
+    plt.show()
+
+# Plot the metrics using the defined function
+plot_metrics()
