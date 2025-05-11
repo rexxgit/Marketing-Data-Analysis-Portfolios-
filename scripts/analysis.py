@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import random
 import os
 
@@ -23,15 +24,25 @@ metrics = {
     "Average Order Value (AOV)": {"range": (20, 200), "plot": "bar"},
 }
 
-# Generate dates for x-axis
-months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-dates = [f"{random.choice(months)} {random.randint(1, 28)}" for _ in range(12)]
+# Color palette (unique colors)
+color_palette = [
+    "steelblue", "coral", "mediumseagreen", "orchid", "goldenrod",
+    "slateblue", "crimson", "teal", "darkorange", "dodgerblue",
+    "darkgreen", "hotpink", "mediumpurple", "tomato", "skyblue",
+    "olive", "firebrick"
+]
 
-# Create output directory
+# Dates and keyword labels
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+dates = [f"{random.choice(months)} {random.randint(1, 28)}" for _ in range(12)]
+sample_keywords = [f"Keyword {i+1}" for i in range(12)]
+
+# Output directory
 output_dir = "output_of_the_analysis"
 os.makedirs(output_dir, exist_ok=True)
 
-# Function for recommendations
+# Recommendation logic
 def get_recommendation(metric, value):
     if metric == "Bounce Rate":
         return "High bounce rate" if value > 60 else "Acceptable bounce rate"
@@ -69,43 +80,57 @@ def get_recommendation(metric, value):
         return "Upsell more" if value < 60 else "High AOV"
     return "No recommendation"
 
-# Create charts with side panel for recommendations
-for metric, props in metrics.items():
-    values = [round(random.uniform(*props["range"]), 2) for _ in range(12)]
-    recommendation = get_recommendation(metric, sum(values) / len(values))
+# Plotting function with side recommendation
+def plot_metric_with_recommendation(dates_or_labels, values, title, ylabel, recommendation, chart_type='line', color='blue'):
+    fig = plt.figure(figsize=(12, 5))
+    gs = gridspec.GridSpec(1, 2, width_ratios=[1, 3], wspace=0.05)
 
-    fig, ax = plt.subplots(figsize=(10, 4))
-    plt.subplots_adjust(left=0.3)  # Create space for the recommendation
+    # Left panel for recommendation
+    ax0 = fig.add_subplot(gs[0])
+    ax0.axis("off")
+    ax0.text(0, 0.5, f"Recommendation:\n{recommendation}", fontsize=10, wrap=True, verticalalignment='center')
 
-    if props["plot"] == "line":
-        ax.plot(dates, values, marker='o', linestyle='-', color='steelblue')
-    elif props["plot"] == "bar":
-        ax.bar(dates, values, color='coral')
-    elif props["plot"] == "hbar":
-        ax.barh(dates, values, color='mediumseagreen')
-        ax.set_xlabel("Value")
-        ax.set_ylabel("Keyword")
-        ax.set_title(f"{metric} (Lower is Better)")
-        # Add recommendation as text box
-        fig.text(0.01, 0.5, f"Recommendation:\n{recommendation}", fontsize=10,
-                 va='center', ha='left', bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
-        plt.tight_layout()
-        plt.savefig(f"{output_dir}/{metric.replace(' ', '_')}.png")
-        plt.close()
-        continue
+    # Right panel for chart
+    ax1 = fig.add_subplot(gs[1])
+    if chart_type == 'line':
+        ax1.plot(dates_or_labels, values, marker='o', color=color)
+    elif chart_type == 'bar':
+        ax1.bar(dates_or_labels, values, color=color)
+    elif chart_type == 'scatter':
+        ax1.scatter(dates_or_labels, values, color=color)
+    elif chart_type == 'hbar':
+        sorted_pairs = sorted(zip(values, dates_or_labels))  # Sort for better clarity
+        sorted_values, sorted_labels = zip(*sorted_pairs)
+        ax1.barh(sorted_labels, sorted_values, color=color)
+        ax1.set_xlabel("Ranking")
+        ax1.set_ylabel("Keyword")
+        ax1.set_title(title + " (Lower is Better)")
 
-    ax.set_title(f"{metric} Over Time", fontsize=10)
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Value")
-    ax.tick_params(axis='x', rotation=45)
-    ax.grid(True, linestyle='--', alpha=0.5)
-
-    # Add recommendation as text box in left margin
-    fig.text(0.01, 0.5, f"Recommendation:\n{recommendation}", fontsize=10,
-             va='center', ha='left', bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
+    if chart_type != 'hbar':
+        ax1.set_title(title)
+        ax1.set_ylabel(ylabel)
+        ax1.set_xlabel("Date")
+        ax1.tick_params(axis='x', rotation=45)
 
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/{metric.replace(' ', '_')}.png")
+    filename = f"{output_dir}/{title.replace(' ', '_')}.png"
+    plt.savefig(filename)
     plt.close()
 
-"✅ Charts with unique types and side-panel recommendations generated."
+# Loop through and generate all charts
+for idx, (metric, props) in enumerate(metrics.items()):
+    values = [round(random.uniform(*props["range"]), 2) for _ in range(12)]
+    avg_value = sum(values) / len(values)
+    recommendation = get_recommendation(metric, avg_value)
+    color = color_palette[idx % len(color_palette)]
+
+    if props["plot"] == "hbar":
+        plot_metric_with_recommendation(
+            sample_keywords, values, metric, "Value", recommendation, chart_type='hbar', color=color
+        )
+    else:
+        plot_metric_with_recommendation(
+            dates, values, f"{metric} Over Time", "Value", recommendation, chart_type=props["plot"], color=color
+        )
+
+print("✅ Charts generated with unique colors and side-panel recommendations.")
